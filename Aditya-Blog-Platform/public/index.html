@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aditya Blog — Share Ideas. Start Conversations.</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="/">
+        <span class="brand-badge">A</span>
+        <span>Aditya Blog</span>
+      </a>
+      <div class="nav-actions">
+        <div id="profileChip" class="profile-chip">
+          <span id="avatar" class="avatar">A</span>
+          <span id="profileName">User</span>
+        </div>
+        <button id="createBtn" class="btn btn-primary">＋ Write Post</button>
+        <button id="authBtn" class="btn btn-ghost">Login</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="badge">✦ Community Blogging Platform</span>
+        <h1><span class="gradient-text">Write boldly.</span><br/>Connect deeply.</h1>
+        <p>
+          Aditya Blog is a simple, modern space where people can share ideas,
+          publish stories, discover new perspectives and join conversations through comments.
+        </p>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="document.getElementById('latest').scrollIntoView()">Explore Posts</button>
+          <button class="btn btn-ghost" onclick="openCreate()">Start Writing</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="stat-grid">
+          <div class="stat"><strong id="postStat">0</strong><span>Published posts</span></div>
+          <div class="stat"><strong id="commentStat">0</strong><span>Community comments</span></div>
+          <div class="stat"><strong>24/7</strong><span>Ideas stay discoverable</span></div>
+          <div class="stat"><strong>100%</strong><span>Built for interaction</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="latest">
+    <div class="section-head">
+      <div>
+        <h2>Latest stories</h2>
+        <p>Discover what the community is talking about.</p>
+      </div>
+      <div class="toolbar">
+        <input id="searchInput" class="input search" placeholder="Search title, author, category..." />
+        <select id="categoryFilter" class="select">
+          <option value="">All categories</option>
+          <option>Technology</option>
+          <option>Education</option>
+          <option>Lifestyle</option>
+          <option>Travel</option>
+          <option>Career</option>
+          <option>General</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="postsGrid" class="posts-grid"></div>
+  </main>
+
+  <footer>
+    <div class="container">Built for B. Aditya • Full-Stack Blog Platform</div>
+  </footer>
+
+  <div id="authModal" class="modal">
+    <div class="modal-card small">
+      <div class="modal-head">
+        <h3 id="authTitle">Welcome back</h3>
+        <button class="close" onclick="closeModal('authModal')">×</button>
+      </div>
+      <div class="form-grid">
+        <div id="nameWrap" style="display:none">
+          <label>Name</label>
+          <input id="authName" class="input" placeholder="B. Aditya" />
+        </div>
+        <div>
+          <label>Email</label>
+          <input id="authEmail" class="input" type="email" placeholder="aditya@example.com" />
+        </div>
+        <div>
+          <label>Password</label>
+          <input id="authPassword" class="input" type="password" placeholder="Minimum 6 characters" />
+        </div>
+        <button id="authSubmit" class="btn btn-primary">Login</button>
+        <button id="switchAuth" class="btn btn-ghost">New here? Create account</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="createModal" class="modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="editorTitle">Create a new post</h3>
+        <button class="close" onclick="closeModal('createModal')">×</button>
+      </div>
+      <div class="form-grid">
+        <input type="hidden" id="editPostId" />
+        <div class="two">
+          <div>
+            <label>Title</label>
+            <input id="postTitle" class="input" placeholder="Give your story a strong title" />
+          </div>
+          <div>
+            <label>Category</label>
+            <select id="postCategory" class="select">
+              <option>Technology</option><option>Education</option><option>Lifestyle</option>
+              <option>Travel</option><option>Career</option><option>General</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label>Short excerpt</label>
+          <input id="postExcerpt" class="input" maxlength="300" placeholder="A one-line preview for readers" />
+        </div>
+        <div>
+          <label>Cover emoji</label>
+          <input id="postEmoji" class="input" maxlength="8" value="✍️" />
+        </div>
+        <div>
+          <label>Content</label>
+          <textarea id="postContent" class="textarea" placeholder="Write your story here..."></textarea>
+        </div>
+        <button id="publishBtn" class="btn btn-primary">Publish Post</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="viewModal" class="modal">
+    <div class="modal-card post-view">
+      <div class="modal-head">
+        <span id="viewCategory" class="badge"></span>
+        <button class="close" onclick="closeModal('viewModal')">×</button>
+      </div>
+      <div id="viewEmoji" style="font-size:3rem"></div>
+      <h1 id="viewTitle"></h1>
+      <div id="viewMeta" class="help"></div>
+      <div id="viewContent" class="post-content"></div>
+      <div class="actions">
+        <button id="likeBtn" class="btn btn-ghost">♡ Like</button>
+        <button id="editBtn" class="btn btn-ghost" style="display:none">Edit</button>
+        <button id="deleteBtn" class="btn btn-danger" style="display:none">Delete</button>
+      </div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:24px 0"/>
+      <h3>Conversation</h3>
+      <div id="commentComposer" class="form-grid">
+        <textarea id="commentText" class="textarea" style="min-height:90px" placeholder="Add to the conversation..."></textarea>
+        <button id="commentBtn" class="btn btn-primary">Post Comment</button>
+      </div>
+      <div id="commentsList"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="/js/app.js"></script>
+</body>
+</html>
